@@ -381,7 +381,7 @@ export const FAQ_ITEMS = [
     id: "como-pedir",
     pregunta: "¿Cómo puedo hacer mi pedido?",
     respuesta:
-      "Arma tu pedido en esta página: elige tu ciudad, agrega productos al carrito con el botón "Agregar al Pedido" y ajusta las cantidades. Al terminar, abre el carrito y pulsa "Confirmar Pedido por WhatsApp". Te llegará un mensaje listo con todo tu pedido y te contactamos para coordinar la entrega.",
+      "Arma tu pedido en esta página: elige tu ciudad, agrega productos al carrito con el botón 'Agregar al Pedido' y ajusta las cantidades. Al terminar, abre el carrito y pulsa 'Confirmar Pedido por WhatsApp'. Te llegará un mensaje listo con todo tu pedido y te contactamos para coordinar la entrega.",
   },
   {
     id: "cuando-entregan",
