@@ -12,17 +12,18 @@ export default function Catalog() {
     filtro === "todos" ? PRODUCTOS : PRODUCTOS.filter((p) => p.categoria === filtro);
 
   return (
-    <section id="catalogo" className="scroll-mt-20 bg-cream py-20 sm:py-24">
+    <section id="catalogo" className="scroll-mt-28 bg-cream py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Catálogo Fresco"
           title="Del potrero a tu mesa"
-          description="Arma tu pedido con lo que necesitas. Lo confirmamos contigo por WhatsApp antes de salir a entrega."
+          description="Elige tu ciudad, arma tu pedido y lo confirmamos contigo por WhatsApp antes del reparto."
         />
 
+        {/* Filtros */}
         <div
           role="group"
-          aria-label="Filtrar productos por categoría"
+          aria-label="Filtrar por categoría"
           className="-mx-4 mt-10 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
         >
           {CATEGORIAS.map((cat) => {
@@ -45,6 +46,7 @@ export default function Catalog() {
           })}
         </div>
 
+        {/* Grilla de productos */}
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {visibles.map((producto) => (
             <ProductCard key={producto.id} product={producto} />
@@ -52,8 +54,8 @@ export default function Catalog() {
         </div>
 
         <p className="mt-8 text-sm text-forest/60">
-          Precios en pesos mexicanos (MXN). El costo de envío se confirma según tu
-          zona de reparto.
+          Precios en pesos mexicanos (MXN). Puerco y res: congelados al vacío. El costo
+          de envío se confirma según tu zona de reparto.
         </p>
       </div>
     </section>

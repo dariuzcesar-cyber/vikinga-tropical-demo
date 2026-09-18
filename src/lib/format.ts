@@ -11,8 +11,21 @@ export function formatMXN(monto: number): string {
   }).format(monto);
 }
 
-/** "1.5 kg", "1 cono", "3 conos". */
-export function formatCantidad(cantidad: number, unidad: Unit): string {
+/**
+ * "1.5 kg", "2 carpetas", "3 paquetes (500 g c/u)"
+ * Para unidad "paquete", `packageLabel` agrega el gramaje: "500 g".
+ */
+export function formatCantidad(
+  cantidad: number,
+  unidad: Unit,
+  packageLabel?: string,
+): string {
   const { singular, plural } = UNIDADES[unidad];
-  return `${cantidad} ${cantidad === 1 ? singular : plural}`;
+  const label = cantidad === 1 ? singular : plural;
+  const base = `${cantidad} ${label}`;
+  if (packageLabel && unidad === "paquete") {
+    const sufijo = cantidad === 1 ? packageLabel : `${packageLabel} c/u`;
+    return `${base} (${sufijo})`;
+  }
+  return base;
 }

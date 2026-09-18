@@ -20,7 +20,8 @@ import {
   type Product,
 } from "@/data/mockData";
 
-const STORAGE_KEY = "vikinga-tropical:pedido:v1";
+// Bump de versión porque cambiaron Unit ("cono" → "carpeta" / "paquete") y catálogo.
+const STORAGE_KEY = "vikinga-tropical:pedido:v2";
 const PRODUCTOS_POR_ID = new Map(PRODUCTOS.map((p) => [p.id, p]));
 
 interface StoredItem {
@@ -36,7 +37,6 @@ export interface CartLine {
 
 interface CartContextValue {
   lines: CartLine[];
-  /** Número de productos distintos en el pedido. */
   itemCount: number;
   total: number;
   ciudad: Ciudad;
@@ -54,7 +54,6 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-/** Ajusta la cantidad al incremento de la unidad y a los límites permitidos. */
 function clampCantidad(producto: Product, cantidad: number): number {
   const { step } = UNIDADES[producto.unidad];
   const ajustada = Math.round(cantidad / step) * step;
@@ -68,8 +67,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
 
-  // Recupera el pedido guardado (solo en el cliente, tras el primer render,
-  // para no romper la hidratación).
+  // Hidratación desde localStorage (solo en cliente).
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -88,12 +86,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
                 !producto ||
                 typeof cantidad !== "number" ||
                 !Number.isFinite(cantidad)
-              ) {
+              )
                 return [];
-              }
-              return [
-                { id: producto.id, cantidad: clampCantidad(producto, cantidad) },
-              ];
+              return [{ id: producto.id, cantidad: clampCantidad(producto, cantidad) }];
             });
             setItems(limpios);
           }
@@ -106,17 +101,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
       }
     } catch {
-      // localStorage no disponible o JSON corrupto: se empieza con pedido vacío.
+      /* localStorage no disponible o JSON corrupto: pedido en blanco. */
     }
     setHydrated(true);
   }, []);
 
+  // Persistencia.
   useEffect(() => {
     if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, ciudad, pago }));
     } catch {
-      // Sin persistencia; el carrito sigue funcionando en memoria.
+      /* Sin persistencia; el carrito sigue funcionando en memoria. */
     }
   }, [hydrated, items, ciudad, pago]);
 
@@ -151,7 +147,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const clearCart = useCallback(() => setItems([]), []);
-  const openCart = useCallback(() => setIsOpen(true), []);
+  const openCart  = useCallback(() => setIsOpen(true), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
 
   const lines = useMemo<CartLine[]>(
@@ -159,13 +155,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       items.flatMap((it): CartLine[] => {
         const producto = PRODUCTOS_POR_ID.get(it.id);
         if (!producto) return [];
-        return [
-          {
-            producto,
-            cantidad: it.cantidad,
-            subtotal: producto.precio * it.cantidad,
-          },
-        ];
+        return [{ producto, cantidad: it.cantidad, subtotal: producto.precio * it.cantidad }];
       }),
     [items],
   );
@@ -192,19 +182,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setCiudad,
       setPago,
     }),
-    [
-      lines,
-      total,
-      ciudad,
-      pago,
-      isOpen,
-      addItem,
-      updateQty,
-      removeItem,
-      clearCart,
-      openCart,
-      closeCart,
-    ],
+    [lines, total, ciudad, pago, isOpen, addItem, updateQty, removeItem, clearCart, openCart, closeCart],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

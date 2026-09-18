@@ -3,28 +3,27 @@
 import { useState } from "react";
 import { ChevronDown, Clock, GraduationCap, MessageCircle } from "lucide-react";
 import { MODULOS_TALLER } from "@/data/mockData";
-import { whatsappLink } from "@/lib/whatsapp";
-
-const MENSAJE_AVISO =
-  "Hola Vikinga Tropical, quiero que me avisen por WhatsApp cuando se lance el Taller Gratuito de Producción Avícola de la Academia Vikinga.";
+import { MENSAJE_ACADEMIA, whatsappLink } from "@/lib/whatsapp";
 
 export default function Academy() {
   const [abierto, setAbierto] = useState<string | null>(MODULOS_TALLER[0].id);
 
   return (
-    <section id="academia" className="scroll-mt-20 bg-cream py-20 sm:py-24">
+    <section id="academia" className="scroll-mt-28 bg-cream py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-3xl bg-forest text-white shadow-2xl">
+          {/* Banner "Próximamente" */}
           <div className="flex items-center justify-center gap-2 bg-sun px-4 py-3 text-center text-sm font-bold text-forest sm:text-base">
             <span className="relative flex h-2.5 w-2.5 shrink-0">
               <span className="absolute inline-flex h-full w-full rounded-full bg-forest/60 motion-safe:animate-ping" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-forest" />
             </span>
             <Clock aria-hidden="true" className="h-4 w-4 shrink-0" />
-            Próximamente - Lanzamiento a pocos días
+            Próximamente — Lanzamiento a pocos días
           </div>
 
           <div className="grid gap-10 bg-gradient-to-br from-organic/40 to-forest p-6 sm:p-10 lg:grid-cols-2 lg:gap-14 lg:p-14">
+            {/* Descripción */}
             <div>
               <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10">
                 <GraduationCap aria-hidden="true" className="h-6 w-6" />
@@ -55,7 +54,7 @@ export default function Academy() {
               </ul>
 
               <a
-                href={whatsappLink(MENSAJE_AVISO)}
+                href={whatsappLink(MENSAJE_ACADEMIA)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-whatsapp mt-8 px-8 py-4 text-base focus-visible:ring-offset-forest"
@@ -65,6 +64,7 @@ export default function Academy() {
               </a>
             </div>
 
+            {/* Acordeón de módulos */}
             <div className="rounded-2xl bg-white/5 p-2 ring-1 ring-white/10 sm:p-3">
               <h3 className="px-3 pb-2 pt-3 text-sm font-semibold uppercase tracking-widest text-white/70">
                 Vista previa del temario

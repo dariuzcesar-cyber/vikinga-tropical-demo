@@ -6,6 +6,7 @@ interface QuantityStepperProps {
   value: number;
   unidad: Unit;
   nombre: string;
+  packageLabel?: string;
   onChange: (cantidad: number) => void;
   compact?: boolean;
 }
@@ -14,6 +15,7 @@ export default function QuantityStepper({
   value,
   unidad,
   nombre,
+  packageLabel,
   onChange,
   compact = false,
 }: QuantityStepperProps) {
@@ -37,10 +39,10 @@ export default function QuantityStepper({
       </button>
       <output
         className={`px-1 text-center font-semibold tabular-nums ${
-          compact ? "min-w-[3.75rem] text-xs" : "min-w-[4.75rem] text-sm"
+          compact ? "min-w-[3.75rem] text-xs" : "min-w-[5.5rem] text-sm"
         }`}
       >
-        {formatCantidad(value, unidad)}
+        {formatCantidad(value, unidad, packageLabel)}
       </output>
       <button
         type="button"

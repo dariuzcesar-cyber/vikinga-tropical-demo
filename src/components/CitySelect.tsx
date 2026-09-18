@@ -2,11 +2,11 @@
 
 import { ChevronDown, MapPin } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { CIUDADES, type Ciudad } from "@/data/mockData";
+import { CIUDADES, CIUDADES_ENTREGA, type Ciudad } from "@/data/mockData";
 
 interface CitySelectProps {
   id: string;
-  /** "glass" sobre la barra oscura; "light" sobre fondos claros. */
+  /** "glass" sobre la barra oscura · "light" sobre fondos claros. */
   variant?: "glass" | "light";
   className?: string;
 }
@@ -17,6 +17,13 @@ const VARIANTES = {
   light:
     "border-forest/15 bg-white text-forest hover:border-organic/40 focus-visible:ring-organic",
 } as const;
+
+/** Muestra el día de entrega abreviado entre paréntesis en cada opción. */
+function getOptionLabel(ciudad: Ciudad): string {
+  const info = CIUDADES_ENTREGA[ciudad];
+  if (info.frecuencia === "especial") return `${ciudad} (Envío especial)`;
+  return `${ciudad} · ${info.dia}`;
+}
 
 export default function CitySelect({
   id,
@@ -32,7 +39,7 @@ export default function CitySelect({
       </label>
       <MapPin
         aria-hidden="true"
-        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2"
+        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 opacity-80"
       />
       <select
         id={id}
@@ -42,7 +49,7 @@ export default function CitySelect({
       >
         {CIUDADES.map((c) => (
           <option key={c} value={c} className="bg-white text-forest">
-            {c}
+            {getOptionLabel(c)}
           </option>
         ))}
       </select>
