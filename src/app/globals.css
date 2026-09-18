@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-cream font-sans text-forest antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Sobre fondos claros */
+  .btn-primary {
+    @apply btn bg-organic text-white hover:bg-forest focus-visible:ring-organic;
+  }
+
+  /* Sobre fondos oscuros (hero, academia) */
+  .btn-light {
+    @apply btn bg-cream text-forest hover:bg-white focus-visible:ring-white focus-visible:ring-offset-black/40;
+  }
+
+  .btn-outline-light {
+    @apply btn border border-white/60 text-white hover:bg-white/10 focus-visible:ring-white focus-visible:ring-offset-black/40;
+  }
+
+  .btn-whatsapp {
+    @apply btn bg-whatsapp text-forest hover:brightness-95 focus-visible:ring-forest;
+  }
+}
